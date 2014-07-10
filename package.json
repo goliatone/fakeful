@@ -1,0 +1,21 @@
+{
+  "name": "xlsx2json",
+  "version": "0.0.0",
+  "description": "Test",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "kk"
+  ],
+  "author": "goliatone",
+  "license": "ISC",
+  "dependencies": {
+    "xlsx": "0.7.6-g",
+    "csv": "~0.3.6",
+    "express": "^3.4.8",
+    "method-override": "~1.0.0",
+    "json-file-db": "0.0.2"
+  }
+}
