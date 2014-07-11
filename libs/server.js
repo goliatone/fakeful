@@ -7,6 +7,7 @@ var express = require('express'),
 
 console.log("***************************");
 console.log("time: ", new Date());
+console.log('dirname:', __dirname);
 
 server.express = express;
 
@@ -17,8 +18,8 @@ server.use(methodOverride());
 server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded());
-// server.use(express.static(__dirname + '/public/'));
-// server.use(express.directory(__dirname + '/public/'));
+server.use(express.static(__dirname + '/../public'));
+server.use(express.directory(__dirname + '/../public'));
 server.use(server.router);
 
 /*
@@ -27,7 +28,7 @@ server.use(server.router);
  * it would not receive errors from
  * server.get()'s
  */
-server.use(errorHandler);
+server.use(errorHandler());
 
 
 // error handling middleware have an arity of 4
@@ -61,17 +62,5 @@ server.run = function(config) {
     console.log('Server Run: listening in port', port);
     server.listen(port);
 };
-// server.get('/', function(req, res, next) {
-
-//     res.json({
-//         success: true,
-//         count: 40,
-//         data: {
-//             message: "hola mundito!"
-//         }
-//     });
-// });
-
-
 
 module.exports = server;
