@@ -1,25 +1,34 @@
 var express = require('express'),
     methodOverride = require('method-override'),
     cors = require('../middleware/cors'),
+    errorHandler = require('../middleware/errorHandler'),
     routes = require('../routes'),
     server = express();
 
 console.log("***************************");
 console.log("time: ", new Date());
 
+server.express = express;
+
 /*
  * Serve all assets in public directory.
  */
-
 server.use(methodOverride());
 server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded());
-server.use(express.static(__dirname + '/public/'));
-server.use(express.directory(__dirname + '/public/'));
+// server.use(express.static(__dirname + '/public/'));
+// server.use(express.directory(__dirname + '/public/'));
 server.use(server.router);
 
-server.use(error);
+/*
+ * The error handler is placed below
+ * the `server.router`, if it were above
+ * it would not receive errors from
+ * server.get()'s
+ */
+server.use(errorHandler);
+
 
 // error handling middleware have an arity of 4
 // instead of the typical (req, res, next),
@@ -52,17 +61,16 @@ server.run = function(config) {
     console.log('Server Run: listening in port', port);
     server.listen(port);
 };
+// server.get('/', function(req, res, next) {
 
-server.get('/', function(req, res, next) {
-
-    res.json({
-        success: true,
-        count: 40,
-        data: {
-            message: "hola mundito!"
-        }
-    });
-});
+//     res.json({
+//         success: true,
+//         count: 40,
+//         data: {
+//             message: "hola mundito!"
+//         }
+//     });
+// });
 
 
 

@@ -4,7 +4,7 @@
  * @return {Function}       Express like middleware.
  */
 module.exports = function(options) {
-    console.log('Middleware: initialize CORS support');
+    console.log('∆ Middleware: initialize CORS support');
     options || (options = {
         domains: '*'
     });
