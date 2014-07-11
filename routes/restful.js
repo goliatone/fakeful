@@ -40,7 +40,9 @@ routes.destroy = function(req, res, next) {
     });
 };
 
-
+//TODO: Make take config object to add a resource path
+//so that we can namespace resources and we can take in
+//routes from a configuration file.
 module.exports = function(server) {
     console.log(' - API RESTful route handler');
 
