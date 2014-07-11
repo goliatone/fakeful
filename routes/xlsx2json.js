@@ -18,6 +18,9 @@ converter.xlsx = function(req, res, next) {
     });
 };
 
+// var fs = require('fs');
+// fs.createReadStream('test.log').pipe(fs.createWriteStream('newLog.log'));
+// http://stackoverflow.com/questions/11293857/fastest-way-to-copy-file-in-node-js
 module.exports = function(server) {
     console.log(' - XLSX route handler');
     server.get('/xlsx/:output', converter.xlsx);
