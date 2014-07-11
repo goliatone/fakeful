@@ -1,5 +1,5 @@
-var fs = require('fs');
-var _ = require('underscore');
+var fs = require('fs'),
+    _ = require('underscore');
 
 /**
  * Creates a DB instance that is a simple wapper around the given file.
