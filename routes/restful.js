@@ -47,12 +47,12 @@ module.exports = function(server) {
     console.log(' - API RESTful route handler');
 
     // server.get('/db', routes.db);
-    server.get('/:resource', routes.list);
-    server.get('/:parent/:parentId/:resource', routes.list);
-    server.get('/:resource/:id', routes.read);
+    server.get('/api/:resource', routes.list);
+    server.get('/api/:parent/:parentId/:resource', routes.list);
+    server.get('/api/:resource/:id', routes.read);
 
-    server.post('/:resource', routes.create);
+    server.post('/api/:resource', routes.create);
 
-    server.put('/:resource/:id', routes.update);
-    server.patch('/:resource/:id', routes.update);
+    server.put('/api/:resource/:id', routes.update);
+    server.patch('/api/:resource/:id', routes.update);
 };
