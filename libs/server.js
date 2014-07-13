@@ -10,11 +10,17 @@ console.log("time: ", new Date());
 console.log('dirname:', __dirname);
 
 server.express = express;
-
+var multer = require('multer');
 /*
  * Serve all assets in public directory.
  */
 server.use(methodOverride());
+server.use(multer({
+    dest: './uploadDir/',
+    rename: function(fieldname, filename) {
+        return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
+    }
+}));
 server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded());
@@ -55,12 +61,13 @@ server.findPort = function getPort() {
 var port = server.findPort();
 server.set('port', port);
 
-
 server.run = function(config) {
     var port = server.findPort();
     routes(server);
     console.log('Server Run: listening in port', port);
     server.listen(port);
 };
+
+console.log('ROUTES:', server.routes);
 
 module.exports = server;
