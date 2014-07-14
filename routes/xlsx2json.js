@@ -2,13 +2,20 @@ var xlsxj = require("../libs/xlsx2json"),
     express = require('express'),
     router = express.Router();
 
-var converter = {};
+var uploader = {};
+uploader.post = function(req, res) {
+    // request.files will contain the uploaded file(s),
+    // keyed by the input name (in this case, "file")
+    console.log(req.files);
 
-converter.xlsx = function(req, res, next) {
+    var file = req.files['convertFile'];
+
+    var path = file.path;
+    var output = 'resources/' + file.originalname.replace('.xlsx', '.json');
 
     xlsxj({
-        input: req.params.output + ".xlsx",
-        output: req.params.output + ".json",
+        input: path,
+        output: output,
         headerTransforms: [
 
             function removeSpaces(header) {
@@ -20,20 +27,11 @@ converter.xlsx = function(req, res, next) {
     });
 };
 
-var uploader = {};
-uploader.post = function(req, res) {
-    // request.files will contain the uploaded file(s),
-    // keyed by the input name (in this case, "file")
-    res.send({
-        "message": "POST uploader"
-    });
-};
-
 uploader.get = function(req, res) {
     res.status(200).set('Content-Type', 'text/html');
     res.send(
         '<form action="/xlsx/upload" method="post" enctype="multipart/form-data">' +
-        '<input type="file" name="upload-file">' +
+        '<input type="file" name="convertFile">' +
         '<input type="submit" value="Upload!">' +
         '</form>'
     );
@@ -41,7 +39,6 @@ uploader.get = function(req, res) {
 
 router.get('/upload', uploader.get)
 router.post('/upload', uploader.post);
-router.get('/:output', converter.xlsx);
 
 module.exports = function(server) {
     console.log(' - XLSX route handler');
