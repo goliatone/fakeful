@@ -22,14 +22,13 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded());
 server.use(cookieParser());
 server.use(multer({
-    dest: './uploadDir/',
+    dest: './uploads/',
     rename: function(fieldname, filename) {
         return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
     }
 }));
 server.use(cors());
 server.use(express.static(__dirname + '/../public'));
-// server.use(express.directory(__dirname + '/../public'));
 
 server.findPort = function getPort() {
     var port = process.env.PORT || 9390;
@@ -51,8 +50,10 @@ server.run = function(config) {
     });
 };
 
-// development error handler
-// will print stacktrace
+/*
+ * development error handler
+ * will print stacktrace
+ */
 if (server.get('env') === 'development') {
     server.use(function(err, req, res, next) {
         res.status(err.status || 500);
@@ -63,8 +64,10 @@ if (server.get('env') === 'development') {
     });
 }
 
-// production error handler
-// no stacktraces leaked to user
+/*
+ * production error handler
+ * no stacktraces leaked to user
+ */
 server.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -72,6 +75,6 @@ server.use(function(err, req, res, next) {
         error: {}
     });
 });
-// console.log('ROUTES:', server.routes);
+
 
 module.exports = server;
