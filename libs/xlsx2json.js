@@ -23,6 +23,7 @@ function CV(config, callback) {
 }
 
 CV.prototype.load_xlsx = function(input) {
+    console.log('INPUT', input);
     return xlsx.readFile(input);
 };
 
