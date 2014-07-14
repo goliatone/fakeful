@@ -11,7 +11,6 @@ function XLSX_json(config, callback) {
     }
     console.info('YO')
     var cv = new CV(config, callback);
-
 }
 
 function CV(config, callback) {
@@ -25,7 +24,7 @@ function CV(config, callback) {
 
 CV.prototype.load_xlsx = function(input) {
     return xlsx.readFile(input);
-}
+};
 
 CV.prototype.ws = function(wb) {
     var target_sheet = '';
@@ -33,11 +32,11 @@ CV.prototype.ws = function(wb) {
     if (target_sheet === '') target_sheet = wb.SheetNames[0];
     ws = wb.Sheets[target_sheet];
     return ws;
-}
+};
 
 CV.prototype.csv = function(ws) {
     return csv_file = xlsx.utils.make_csv(ws)
-}
+};
 
 CV.prototype.cvjson = function(csv, output, callback) {
     var record = [],
