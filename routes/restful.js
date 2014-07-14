@@ -1,10 +1,18 @@
-var db = require('../libs/filedb');
+var db = require('../libs/filedb'),
+    express = require('express'),
+    router = express.Router();
+
+
 
 var routes = {};
 
 // GET /:resource
+
 routes.list = function(req, res, next) {
-    // res.send('list=> resource:' + req.params.resource);
+
+    var where = JSON.parse(req.param('where'));
+    console.log(where);
+
     db(req.params.resource).get(function(err, resources) {
         res.jsonp(resources);
     });
@@ -40,19 +48,20 @@ routes.destroy = function(req, res, next) {
     });
 };
 
+// server.get('/db', routes.db);
+router.get('/:resource', routes.list);
+router.get('/:parent/:parentId/:resource', routes.list);
+router.get('/:resource/:id', routes.read);
+
+router.post('/:resource', routes.create);
+
+router.put('/:resource/:id', routes.update);
+router.patch('/:resource/:id', routes.update);
+
 //TODO: Make take config object to add a resource path
 //so that we can namespace resources and we can take in
 //routes from a configuration file.
 module.exports = function(server) {
     console.log(' - API RESTful route handler');
-
-    // server.get('/db', routes.db);
-    server.get('/api/:resource', routes.list);
-    server.get('/api/:parent/:parentId/:resource', routes.list);
-    server.get('/api/:resource/:id', routes.read);
-
-    server.post('/api/:resource', routes.create);
-
-    server.put('/api/:resource/:id', routes.update);
-    server.patch('/api/:resource/:id', routes.update);
+    server.use('/api', router);
 };
