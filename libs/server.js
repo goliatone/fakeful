@@ -1,8 +1,12 @@
 var express = require('express'),
-    methodOverride = require('method-override'),
+    favicon = require('static-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
     cors = require('../middleware/cors'),
     errorHandler = require('../middleware/errorHandler'),
     routes = require('../routes'),
+    debug = require('debug')('et'),
     server = express();
 
 console.log("***************************");
@@ -11,10 +15,12 @@ console.log('dirname:', __dirname);
 
 server.express = express;
 var multer = require('multer');
-/*
- * Serve all assets in public directory.
- */
-server.use(methodOverride());
+
+server.use(favicon());
+server.use(logger('dev'));
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded());
+server.use(cookieParser());
 server.use(multer({
     dest: './uploadDir/',
     rename: function(fieldname, filename) {
@@ -22,33 +28,8 @@ server.use(multer({
     }
 }));
 server.use(cors());
-server.use(express.json());
-server.use(express.urlencoded());
 server.use(express.static(__dirname + '/../public'));
-server.use(express.directory(__dirname + '/../public'));
-server.use(server.router);
-
-/*
- * The error handler is placed below
- * the `server.router`, if it were above
- * it would not receive errors from
- * server.get()'s
- */
-server.use(errorHandler());
-
-
-// error handling middleware have an arity of 4
-// instead of the typical (req, res, next),
-// otherwise they behave exactly like regular
-// middleware, you may have several of them,
-// in different orders etc.
-function error(err, req, res, next) {
-    // log it
-    console.error(err.stack);
-
-    // respond with 500 "Internal Server Error".
-    res.send(500);
-}
+// server.use(express.directory(__dirname + '/../public'));
 
 server.findPort = function getPort() {
     var port = process.env.PORT || 9390;
@@ -65,9 +46,32 @@ server.run = function(config) {
     var port = server.findPort();
     routes(server);
     console.log('Server Run: listening in port', port);
-    server.listen(port);
+    var app = server.listen(port, function() {
+        debug('Express server listening on port' + app.address().port);
+    });
 };
 
-console.log('ROUTES:', server.routes);
+// development error handler
+// will print stacktrace
+if (server.get('env') === 'development') {
+    server.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
+}
+
+// production error handler
+// no stacktraces leaked to user
+server.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+});
+// console.log('ROUTES:', server.routes);
 
 module.exports = server;
