@@ -42,6 +42,9 @@ router.get('/upload', uploader.get)
 router.post('/upload', uploader.post);
 
 module.exports = function(server) {
+    //TODO: Here we should also take a config.
+    //config should have upload/output directories.
+    //we should mkdir if they do not exist.
     console.log(' - XLSX route handler');
     server.use('/xlsx', router);
 };
