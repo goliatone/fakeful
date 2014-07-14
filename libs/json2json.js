@@ -12,16 +12,16 @@ var getStream(jsonData) = function() {
 };
 
 getStream(options.input).on('complete', function(err) {
-        // handle any errors
-    }
+    // handle any errors
+});
 
-    var json2json = function(options, callback) {
-        var output = require(options.input);
-        var stream = fs.createWriteStream(output, {
-            flags: 'w'
-        });
-        stream.write(JSON.stringify(output));
-        callback(null, output);
-    };
+var json2json = function(options, callback) {
+    var output = require(options.input);
+    var stream = fs.createWriteStream(output, {
+        flags: 'w'
+    });
+    stream.write(JSON.stringify(output));
+    callback(null, output);
+};
 
-    module.exports = json2json;
+module.exports = json2json;
