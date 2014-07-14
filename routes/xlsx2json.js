@@ -1,4 +1,5 @@
 var xlsxj = require("../libs/xlsx2json"),
+    json2 = require("../libs/json2json"),
     express = require('express'),
     router = express.Router();
 
@@ -11,9 +12,9 @@ uploader.post = function(req, res) {
     var file = req.files['convertFile'];
 
     var path = file.path;
-    var output = 'resources/' + file.originalname.replace('.xlsx', '.json');
+    var output = 'resources/' + file.originalname.replace(file.extension, '.json');
 
-    xlsxj({
+    xlsx({
         input: path,
         output: output,
         headerTransforms: [
@@ -23,7 +24,7 @@ uploader.post = function(req, res) {
             }
         ]
     }, function(err, result) {
-        res.jsonp(result);
+        res.json(result);
     });
 };
 
