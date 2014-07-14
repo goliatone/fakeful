@@ -14,9 +14,14 @@
     "dependencies": {
         "xlsx": "0.7.6-g",
         "csv": "~0.3.6",
-        "express": "^3.4.8",
+        "express": "^4.2.0",
         "method-override": "~1.0.0",
         "underscore": "~1.4.4",
+        "morgan": "~1.0.0",
+        "static-favicon": "~1.0.0",
+        "cookie-parser": "~1.0.1",
+        "body-parser": "~1.0.0",
+        "debug": "~0.7.4",
         "multer": "^0.1.2"
     }
 }
