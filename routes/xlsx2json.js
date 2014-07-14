@@ -1,5 +1,6 @@
-var xlsxj = require("../libs/xlsx2json"),
-    json2 = require("../libs/json2json"),
+var fs = require('fs'),
+    xlsx = require("../libs/xlsx2json"),
+    // json2 = require("../libs/json2json"),
     express = require('express'),
     router = express.Router();
 
@@ -45,6 +46,21 @@ module.exports = function(server) {
     //TODO: Here we should also take a config.
     //config should have upload/output directories.
     //we should mkdir if they do not exist.
+    _mkdirp('uploads');
+    _mkdirp('resources');
+
     console.log(' - XLSX route handler');
     server.use('/xlsx', router);
 };
+
+
+function _mkdirp(path) {
+    if (!fs.existsSync(path)) {
+        fs.mkdirSync(path, 0766, function(err) {
+            if (err) {
+                console.log(err);
+                console.log("ERROR! Can't make the directory! \n");
+            }
+        });
+    }
+}
