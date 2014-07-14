@@ -9,17 +9,16 @@ var routes = {};
 // GET /:resource
 
 routes.list = function(req, res, next) {
-
-    var where = JSON.parse(req.param('where'));
-    console.log(where);
-
-    db(req.params.resource).get(function(err, resources) {
+    // var where = JSON.parse(req.param('where'));
+    // console.log(where);
+    // console.log('HERE')
+    db('resources/' + req.params.resource).find(function(err, resources) {
         res.jsonp(resources);
     });
 };
 // POST /:resource
 routes.create = function(req, res, next) {
-    db(req.params.resource).put(req.body, function(err, resource) {
+    db('resources/' + req.params.resource).insert(req.body, function(err, resource) {
         res.jsonp(resource);
     });
 };
@@ -27,23 +26,22 @@ routes.create = function(req, res, next) {
 // GET /:resource/:id
 routes.read = function(req, res, next) {
     // res.send('read=> resource:' + req.params.resource + ' id: ' + req.params.id);
-
-    db(req.params.resource).getSingle(+req.params.id, function(err, resource) {
-        res.jsonp(resource);
+    db('resources/' + req.params.resource).findOne(+req.params.id, function(err, resource) {
+        res.json(resource);
     });
 };
 
 // PUT /:resource/:id
 // PATCH /:resource/:id
 routes.update = function(req, res, next) {
-    db(req.params.resource).put(req.body, function(err, resource) {
+    db('resources/' + req.params.resource).insert(req.body, function(err, resource) {
         res.jsonp(resource);
     });
 };
 
 // DELETE /:resource/:id
 routes.destroy = function(req, res, next) {
-    db(req.params.resource).del(req.params.id, function(err, resource) {
+    db('resources/' + req.params.resource).remove(req.params.id, function(err, resource) {
         res.jsonp(resource);
     });
 };
