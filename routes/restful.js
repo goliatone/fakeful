@@ -20,6 +20,7 @@ routes.list = function(req, res, next) {
         res.jsonp(resources);
     });
 };
+
 // POST /:resource
 routes.create = function(req, res, next) {
     db(req.params.resource).insert(req.body, function(err, resource) {
@@ -71,12 +72,14 @@ routes.listResources = function(req, res) {
     });
 };
 
-router.get('/resources', routes.listResources);
 router.get('/:resource', routes.list);
-router.get('/:parent/:parentId/:resource', routes.list);
 router.get('/:resource/:id', routes.read);
+router.get('/resources', routes.listResources);
+router.get('/:parent/:parentId/:resource', routes.list);
+
 
 router.post('/:resource', routes.create);
+
 
 router.put('/:resource/:id', routes.update);
 router.patch('/:resource/:id', routes.update);
