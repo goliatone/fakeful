@@ -9,7 +9,7 @@ function XLSX_json(config, callback) {
         console.error("You miss a input file");
         process.exit(1);
     }
-    console.info('YO')
+
     var cv = new CV(config, callback);
 }
 
