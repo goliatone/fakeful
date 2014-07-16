@@ -9,5 +9,13 @@ Converter.json = json;
 Converter.xlsx = xlsx;
 
 Converter.prototype.factory = function(extension) {
-
+    return Converter[extension];
 };
+
+Converter.prototype.run = function(extension, options, callback) {
+    var lib = this.factory(extension);
+    lib(options, callback);
+};
+
+
+module.exports = new Converter;
