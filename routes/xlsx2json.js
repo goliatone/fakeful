@@ -1,4 +1,5 @@
 var fs = require('fs'),
+    Converter = require('converter'),
     express = require('express'),
     router = express.Router();
 
@@ -15,7 +16,7 @@ uploader.post = function(req, res) {
     var path = file.path;
     var output = 'resources/' + file.originalname.replace(file.extension, 'json');
 
-    json2({
+    Converter.run(file.extension, {
         input: path,
         output: output,
         headerTransforms: [
