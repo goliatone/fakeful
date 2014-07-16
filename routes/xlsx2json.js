@@ -1,6 +1,7 @@
 var fs = require('fs'),
     xlsx = require("../libs/xlsx2json"),
-    // json2 = require("../libs/json2json"),
+    json2 = require("../libs/json2json"),
+    csv2 = require("../libs/csv2json"),
     express = require('express'),
     router = express.Router();
 
@@ -12,10 +13,12 @@ uploader.post = function(req, res) {
 
     var file = req.files['convertFile'];
 
+    //TODO: Sanitize output file name
+    //TODO: Build index!
     var path = file.path;
-    var output = 'resources/' + file.originalname.replace(file.extension, '.json');
+    var output = 'resources/' + file.originalname.replace(file.extension, 'json');
 
-    xlsx({
+    json2({
         input: path,
         output: output,
         headerTransforms: [
