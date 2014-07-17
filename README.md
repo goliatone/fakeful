@@ -1,9 +1,10 @@
-##Resources
+## TODO:
+- Output templates
+- Files: Format conversion library. Support CSV, JSON
+- Error handling
 
-http://nytimes.github.io/pourover/
-
-http://npmjs.org/package/json-server
-
-https://github.com/sylvain-hamel/json-file-db/blob/master/index.js
-
-https://github.com/domharrington/fileupload/tree/master/lib
+## Resources
+- [Browser library][1]
+- [File upload][2]
+[1]:(http://nytimes.github.io/pourover/)
+[2]:(https://github.com/domharrington/fileupload/tree/master/lib)
