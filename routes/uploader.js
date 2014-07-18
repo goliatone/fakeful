@@ -3,19 +3,32 @@ var fs = require('fs'),
     express = require('express'),
     router = express.Router();
 
-var uploader = {};
-uploader.post = function(req, res) {
-    // request.files will contain the uploaded file(s),
-    // keyed by the input name (in this case, "file")
-    console.log(req.files);
+var DEFAULTS = {
+    outputDir: 'resources',
+    filenameParam: 'filename',
+    outputExtension: 'json',
+    uploadInputName: 'convertFile',
+    sanitizeFilename: function(filename) {
 
-    var file = req.files['convertFile'];
+    }
+};
+
+var uploader = {
+
+};
+
+uploader.post = function(req, res) {
+    /*
+     * request.files will contain the uploaded file(s),
+     * keyed by the input name (in this case, "convertFile")
+     */
+    var file = _getFile(req, DEFAULTS);
 
     //TODO: Sanitize output file name
     //TODO: Take in filename parameter!
     //TODO: Build index!
-    var path = file.path;
-    var output = 'resources/' + file.originalname.replace(file.extension, 'json');
+    var path = file.path,
+        output = _outputPath(req, file, DEFAULTS);
 
     Converter.run(file.extension, {
         input: path,
@@ -51,21 +64,41 @@ module.exports = function(server) {
     //TODO: Here we should also take a config.
     //config should have upload/output directories.
     //we should mkdir if they do not exist.
-    _mkdirp('uploads');
-    _mkdirp('resources');
+    _mkdirp('uploads', 'resources');
 
     console.log(' - XLSX route handler');
     server.use('/files', router);
 };
 
+var options = {
+    filenameParam: 'filename',
+    outputExtension: 'json',
+    outputDir: 'resources'
+};
+
+
+function _getFile(req, options) {
+    return req.files[options.uploadInputName];
+}
+
+function _outputPath(req, file, options) {
+    filename = req.param(options.filenameParam, file.originalname);
+    filename = options.sanitizeFilename(filename);
+    //TODO: WATCH OUT FOR MALFORMED PATHS!!!!!
+    return options.outputDir + '/' + filename.replace(file.extension, options.outputExtension);
+}
 
 function _mkdirp(path) {
-    if (!fs.existsSync(path)) {
-        fs.mkdirSync(path, 0766, function(err) {
-            if (err) {
-                console.log(err);
-                console.log("ERROR! Can't make the directory! \n");
-            }
-        });
-    }
+    var paths = [].slice.call(arguments);
+    paths.forEach(function(path) {
+        if (!fs.existsSync(path)) {
+            fs.mkdirSync(path, 0766, function(err) {
+                if (err) {
+                    console.log(err);
+                    console.log("ERROR! Can't make the directory! \n");
+                }
+            });
+        }
+    });
+
 }
