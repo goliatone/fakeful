@@ -14,6 +14,7 @@ Converter.prototype.factory = function(extension) {
 
 Converter.prototype.run = function(extension, options, callback) {
     var lib = this.factory(extension);
+    if (!lib) return callback(new Error('Extension not supported'));
     lib(options, callback);
 };
 
