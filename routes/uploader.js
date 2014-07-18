@@ -1,5 +1,5 @@
 var fs = require('fs'),
-    Converter = require('converter'),
+    Converter = require('../convert'),
     express = require('express'),
     router = express.Router();
 
@@ -12,6 +12,7 @@ uploader.post = function(req, res) {
     var file = req.files['convertFile'];
 
     //TODO: Sanitize output file name
+    //TODO: Take in filename parameter!
     //TODO: Build index!
     var path = file.path;
     var output = 'resources/' + file.originalname.replace(file.extension, 'json');
@@ -26,6 +27,9 @@ uploader.post = function(req, res) {
             }
         ]
     }, function(err, result) {
+        if (err) return res.json(412, {
+            message: "File format not supported"
+        });
         res.json(result);
     });
 };
@@ -33,7 +37,7 @@ uploader.post = function(req, res) {
 uploader.get = function(req, res) {
     res.status(200).set('Content-Type', 'text/html');
     res.send(
-        '<form action="/xlsx/upload" method="post" enctype="multipart/form-data">' +
+        '<form action="/files/upload" method="post" enctype="multipart/form-data">' +
         '<input type="file" name="convertFile">' +
         '<input type="submit" value="Upload!">' +
         '</form>'
@@ -51,7 +55,7 @@ module.exports = function(server) {
     _mkdirp('resources');
 
     console.log(' - XLSX route handler');
-    server.use('/xlsx', router);
+    server.use('/files', router);
 };
 
 
