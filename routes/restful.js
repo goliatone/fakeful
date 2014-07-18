@@ -54,6 +54,7 @@ routes.destroy = function(req, res, next) {
     });
 };
 
+// GET /resources
 routes.listResources = function(req, res) {
     var _resources = db.resourcesPath;
     fs.readdir(_resources, function(err, files) {
