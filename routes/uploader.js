@@ -1,6 +1,7 @@
 var fs = require('fs'),
     Converter = require('../convert'),
     express = require('express'),
+    // flattener = require('../libs/flattener'),
     router = express.Router();
 
 var DEFAULTS = {
@@ -9,7 +10,7 @@ var DEFAULTS = {
     outputExtension: 'json',
     uploadInputName: 'convertFile',
     sanitizeFilename: function(filename) {
-
+        return filename.replace(/[^a-z0-9]/gi, '_').toLowerCase();
     }
 };
 
@@ -83,9 +84,10 @@ function _getFile(req, options) {
 
 function _outputPath(req, file, options) {
     filename = req.param(options.filenameParam, file.originalname);
+    filename = filename.replace(file.extension, options.outputExtension);
     filename = options.sanitizeFilename(filename);
     //TODO: WATCH OUT FOR MALFORMED PATHS!!!!!
-    return options.outputDir + '/' + filename.replace(file.extension, options.outputExtension);
+    return options.outputDir + '/' + filename;
 }
 
 function _mkdirp(path) {
@@ -100,5 +102,4 @@ function _mkdirp(path) {
             });
         }
     });
-
 }
