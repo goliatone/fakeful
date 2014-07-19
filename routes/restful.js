@@ -4,11 +4,35 @@ var db = require('../libs/filedb'),
     express = require('express'),
     router = express.Router();
 
+/***************************************
+ * Template handling, move to file
+ ****************************************/
+
+var Template = require('handlebars');
+Template.registerHelper('data', function(options) {
+    return JSON.stringify(options.data.root.data);
+});
+
+Template.precompileAction = function(action) {
+    var tsrc = fs.readFileSync('views/restful/' + action + '.jtpl', 'utf8');
+    Template[action] = Template.compile(tsrc);
+};
+Template.precompileAction('list');
 
 db.idAttribute = '_index';
 db.resourcesPath = 'resources/';
 
 var routes = {};
+
+routes.resultHandler = function(action, res, err, result) {
+    var out = Template.list({
+        count: result.length || 1,
+        data: result
+    });
+
+    res.set('Content-Type', 'application/json');
+    res.send(200, out);
+};
 
 // GET /:resource
 
@@ -16,9 +40,7 @@ routes.list = function(req, res, next) {
     // var where = JSON.parse(req.param('where'));
     // console.log(where);
     // console.log('HERE')
-    db(req.params.resource).find(function(err, resources) {
-        res.jsonp(resources);
-    });
+    db(req.params.resource).find(routes.resultHandler.bind(routes, 'list', res));
 };
 
 // POST /:resource
@@ -31,12 +53,7 @@ routes.create = function(req, res, next) {
 // GET /:resource/:id
 routes.read = function(req, res, next) {
     // res.send('read=> resource:' + req.params.resource + ' id: ' + req.params.id);
-    db(req.params.resource).findOne(+req.params.id, function(err, resource) {
-        if (err) return res.json(500, {
-            message: 'Error'
-        });
-        res.json(resource);
-    });
+    db(req.params.resource).findOne(+req.params.id, routes.resultHandler.bind(routes, 'read', res));
 };
 
 // PUT /:resource/:id
