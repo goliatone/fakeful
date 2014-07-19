@@ -3,6 +3,9 @@ var fs = require('fs'),
 
 
 var JsonDB = function(resource, idAttribute) {
+
+    JsonDB.loadMetadata();
+
     var idAttr = idAttribute || JsonDB.idAttribute;
     var file = resource.indexOf('.json') === -1 ? resource + '.json' : resource;
     if (!file) {
@@ -17,8 +20,62 @@ var JsonDB = function(resource, idAttribute) {
     return db;
 };
 
+var EXT = JsonDB.EXT = '.json';
 JsonDB.resourcesPath = '';
 JsonDB.idAttribute = 'id';
+JsonDB.metadataFile = '.jsondb';
+JsonDB.metadata = {};
+
+JsonDB.loadMetadata = function() {
+    if (this.loaded) return;
+
+    if (fs.existsSync(file)) return;
+
+    this.load(JsonDB.resourcesPath + JsonDB.metadataFile, function(err, data) {
+        try {
+            JsonDB.metadata = JSON.parse(data);
+        } catch (err) {
+            console.log(err);
+            throw new Error('Unable to load metadata');
+            return;
+        }
+    });
+};
+
+JsonDB.updateMetadata = function(resource, file, items) {
+    JsonDB.metadata[resource] = {
+        file: file,
+        count: items.length || 0
+    };
+    var dirname = JsonDB.resourcesPath + JsonDB.metadataFile;
+    fs.writeFile(dirname, JSON.stringify(JsonDB.metadata, null, " "));
+};
+
+JsonDB.indexMetadata = function() {
+    var dirname = JsonDB.resourcesPath,
+        resource,
+        items,
+        files,
+        total,
+        count;
+
+    files = fs.readdirSync(dirname);
+    total = files.length;
+    files.forEach(function(file) {
+        try {
+            _load(dirname + file, function(err, data) {
+                resource = file.replace(EXT, '');
+                items = JSON.parse(data);
+                JsonDB.updateMetadata(resource, file, items);
+                count++;
+                if (total === count) callback(null, JsonDB.metadata);
+
+            });
+        } catch (e) {
+
+        }
+    });
+};
 
 var _convertValueToFilter = function(attrs, idAttr) {
     // if a value was provided instead of an object, use the value as an id
@@ -46,16 +103,6 @@ var _exists = JsonDB.exists = function(file, callback) {
     callback(new Error('Resource file #file# does not exist'.replace('#file#', file)));
     return;
 };
-
-JsonDB.updateMetadata = function(resource, file, items) {
-    console.log('UPDATE METADATA', resource, file, items);
-    console.log('UPDATE', JsonDB.resourcesPath, resource);
-    // fs.writeFile(file, JSON.stringify(docs, null, " "), 'utf-8', function() {
-    //     JsonDB.updateMetadata(resource, file, docs);
-    // });
-};
-
-
 
 var FileDB = function(file, config) {
     this.file = file;
