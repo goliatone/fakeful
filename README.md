@@ -1,9 +1,9 @@
 ## TODO:
-- TODO Output JSON templates
-- TODO FileDB metadata: indexing, count
+- DONE ~~Output JSON templates~~
+- DONE ~~FileDB metadata: indexing, count~~
 - TODO Resources: list and details
 - TODO Routes: restful list, take in where/params
-- TODO Sanitize output file name
+- DONE ~~Sanitize output file name~~
 - TODO Take in filename parameter!
 - DONE ~~Files: Format conversion library. Support CSV, JSON~~
 - TODO Error handling
