@@ -89,6 +89,12 @@ Routes.destroy = function(req, res, next) {
 
 // GET /resources
 Routes.listResources = function(req, res) {
+    /*
+    db.indexMetadata(function(err, data) {
+        res.jsonp(data);
+    });
+    return;
+*/
     var _resources = db.resourcesPath;
     fs.readdir(_resources, function(err, files) {
         if (err) throw err;
@@ -105,6 +111,8 @@ Routes.listResources = function(req, res) {
         res.jsonp(out);
     });
 };
+
+
 
 router.get('/resources', Routes.listResources);
 
