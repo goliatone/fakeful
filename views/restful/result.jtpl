@@ -1,8 +1,9 @@
 {
     "succes": true,
-    "count": {{count}},
     "message": "{{message}}",
     "data": {
+    	"total": {{total}},
+    	"count": {{count}},
         "{{resource}}": {{{data}}}
     }
 }
