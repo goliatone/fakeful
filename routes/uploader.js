@@ -84,8 +84,8 @@ function _getFile(req, options) {
 
 function _outputPath(req, file, options) {
     filename = req.param(options.filenameParam, file.originalname);
-    filename = filename.replace(file.extension, options.outputExtension);
-    filename = options.sanitizeFilename(filename);
+    filename = filename.replace('.' + file.extension, '');
+    filename = options.sanitizeFilename(filename) + '.' + options.outputExtension;
     //TODO: WATCH OUT FOR MALFORMED PATHS!!!!!
     return options.outputDir + '/' + filename;
 }
