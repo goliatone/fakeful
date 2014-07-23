@@ -29,9 +29,11 @@ JsonDB.metadata = {};
 JsonDB.loadMetadata = function() {
     if (this.loaded) return;
 
-    if (fs.existsSync(file)) return;
+    var dirname = JsonDB.resourcesPath + JsonDB.metadataFile;
 
-    this.load(JsonDB.resourcesPath + JsonDB.metadataFile, function(err, data) {
+    if (fs.existsSync(dirname)) return;
+
+    this.load(dirname, function(err, data) {
         try {
             JsonDB.metadata = JSON.parse(data);
         } catch (err) {
@@ -69,7 +71,6 @@ JsonDB.indexMetadata = function() {
                 JsonDB.updateMetadata(resource, file, items);
                 count++;
                 if (total === count) callback(null, JsonDB.metadata);
-
             });
         } catch (e) {
 
@@ -118,11 +119,11 @@ var FileDB = function(file, config) {
  * @return {void}
  * @throws {Error} If file does not exist.
  */
-FileDB.prototype.find = function(attrs, cb) {
+FileDB.prototype.find = function(options, cb) {
     //predicate is optional
-    if (_.isFunction(attrs)) {
+    if (_.isFunction(options)) {
         cb = attrs;
-        attrs = undefined;
+        options = undefined;
     }
 
     _exists(this.file, cb);
@@ -140,9 +141,9 @@ FileDB.prototype.find = function(attrs, cb) {
             return;
         }
 
-        attrs = _convertValueToFilter(attrs, this.idAttr);
+        options = _convertValueToFilter(options, this.idAttr);
 
-        if (attrs) docs = _.where(docs, attrs);
+        if (options) docs = _.where(docs, options);
 
         cb(null, docs);
     }).bind(this));
