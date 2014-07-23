@@ -8,6 +8,9 @@
 - DONE ~~Files: Format conversion library. Support CSV, JSON~~
 - TODO Error handling
 - TODO Uploader: provide html form
+- TODO Implement fs ops with file streams
+- TODO UI for list/edit resources
+- TODO Refine data: Transform streams
 
 ## Template:
 Context, gathered from FileDB metadata and results.
