@@ -26,7 +26,8 @@
     "node-csv-json": "^0.2.1",
     "faker": "^1.0.0",
     "handlebars": "^2.0.0-alpha.4",
-    "cors": "^2.4.1"
+    "cors": "^2.4.1",
+    "JSONStream": "^0.8.4"
   },
   "devDependencies": {
     "express-debug": "^1.1.0",
