@@ -3,7 +3,7 @@ var express = require('express'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    cors = require('../middleware/cors'),
+    cors = require('cors'),
     errorHandler = require('../middleware/errorHandler'),
     routes = require('../routes'),
     debug = require('debug')('et'),
@@ -54,15 +54,18 @@ server.run = function(config) {
  * development error handler
  * will print stacktrace
  */
-if (server.get('env') === 'development') {
-    server.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
+// if (server.get('env') === 'development') {
+require('express-debug')(server, { /* settings */ });
+server.use(require("express-chrome-logger"));
+
+server.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: err
     });
-}
+});
+// }
 
 /*
  * production error handler
