@@ -2,7 +2,8 @@
 - DONE ~~Output JSON templates~~
 - DONE ~~FileDB metadata: indexing, count~~
 - TODO Resources: list and details
-- TODO Routes: restful list, take in where/params
+- TODO ~~Routes: restful list, take in where/params~~
+    -  TODO: Implement optional resource schema to handle type in queries
 - DONE ~~Sanitize output file name~~
 - TODO Take in filename parameter!
 - DONE ~~Files: Format conversion library. Support CSV, JSON~~
@@ -18,6 +19,16 @@ Context, gathered from FileDB metadata and results.
 * Result data: Array|Object
 * success: boolean
 
+## Restful:
+*NOTE* Right now we do not type check resource objects, so conversions to JSON are left to chance, ie a field containing a number might get parsed as a string. This is OK most of the time, but it could break your `where` queries on the `list` endpoint:
+
+```
+http://localhost:9000/api/athletes?where={"age":23}
+```
+
+```
+http://localhost:9000/api/athletes?where={"age":"23"}
+```
 
 ## Resources
 - [Browser library][1]
