@@ -40,6 +40,7 @@ Routes.resultHandler = function(action, resource, res, err, result) {
         resource: resource,
         message: Routes.messages[action],
         count: result.length || 1,
+        total: 9999,
         data: result
     });
 
@@ -51,17 +52,39 @@ Routes.resultHandler = function(action, resource, res, err, result) {
 
 Routes.list = function(req, res, next) {
     // var where = JSON.parse(req.param('where'));
-    // console.log(where);
-    // console.log('HERE')
+    var where = req.param('where', false);
+    if (where) {
+        where = JSON.parse(where);
+    } else where = undefined;
+
     var resource = req.params.resource;
-    db(resource).find(Routes.resultHandler.bind(null, 'list', resource, res));
+    db(resource).find(where, function(err, items) {
+
+        var offset = req.param('offset', false),
+            limit = req.param('limit', 30),
+            output = items;
+
+        if (offset) {
+            //TODO: Check boundaries!!!
+            //TODO: Check if isNaN after parseInt!
+            offset = parseInt(offset),
+            limit = parseInt(limit);
+
+            offset = offset > 0 ? offset - 1 : 0;
+
+            output = items.slice(offset, offset + limit);
+        }
+
+        Routes.resultHandler('list', resource, res, null, output);
+
+    });
 };
 
 // POST /:resource
 Routes.create = function(req, res, next) {
-    db(req.params.resource).insert(req.body, function(err, resource) {
-        res.jsonp(resource);
-    });
+    var resource = req.params.resource,
+        attributes = req.body;
+    db(resource).insert(attributes, Routes.resultHandler.bind(null, 'create', resource, res));
 };
 
 // GET /:resource/:id
