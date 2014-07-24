@@ -1,15 +1,16 @@
+[
+{{#repeat 13}}
 {
-  "people": [
-    {{#repeat 2}}
-    {
-      "id": {{uid}},
-      "firstName": "{{firstName}}",
-      "lastName": "{{lastName}}",
-      "email": "{{email}}",
-      "work": "{{company}}",
-      "age": {{number 20 50}},
-      "optedin": {{boolean}}
-    }
-    {{/repeat}}
-  ]
+  "_id":"{{uid 32}}",
+  "_index":"{{i}}",
+  "name": "{{findName}}",
+  "handle":"{{userName}}",
+  "address": "{{streetAddress}}",
+  "phone":"{{phoneNumber}}",
+  "company":"{{companyName}}",
+  "img":"{{avatar}}",
+  "bio":
+  "{{sentences 3}}"
 }
+{{/repeat}}
+]
