@@ -1,7 +1,7 @@
 var Handlebars = require('handlebars'),
     faker = require('faker');
 
-
+// console.log(require('faker/lib/company'))
 
 // We try to keep names, emails and companies in sync, so that when using them
 // together in a loop they all relate to each other. To do this we link them all
@@ -78,7 +78,6 @@ var helpers = {
 
         return ret;
     },
-
     number: function(min, max, options) {
         // If only one number is provided then generate from 0 to that number
         if (arguments.length === 2) {
@@ -109,83 +108,30 @@ var helpers = {
         len = len || 32;
         return Math.random().toString(35).substr(2, len);
     },
+    /************************************************
+     * NAME
+     ************************************************/
 
-    name: function(options) {
-        return faker.Name.findName();
-    },
-    userName: function(options) {
-        return faker.Internet.userName();
-    },
-    email: function(options) {
-        return faker.Internet.email();
-    },
-    streetName: function(options) {
-        return faker.Address.streetName();
-    },
-    streetAddress: function(options) {
-        return faker.Address.streetAddress();
-    },
-    streetAddressB: function(options) {
-        return faker.Address.streetAddress(true);
-    },
-    secondaryAddress: function(options) {
-        return faker.Address.secondaryAddress();
-    },
-    city: function(options) {
-        return faker.Address.city();
-    },
-    ukCounty: function(options) {
-        return faker.Address.ukCounty();
-    },
-    ukCountry: function(options) {
-        return faker.Address.ukCountry();
-    },
-    zipcode: function(options) {
-        return faker.Address.zipCode();
-    },
-    latitude: function(options) {
-        return faker.Address.latitude();
-    },
-    longitude: function(options) {
-        return faker.Address.longitude();
-    },
-    phone: function(options) {
-        return faker.PhoneNumber.phoneNumber();
-    },
-    website: function(options) {
-        return faker.Internet.domainName();
-    },
-    company: function(options) {
-        return faker.Company.companyName()
-    },
-    catchPhrase: function(options) {
-        return faker.Company.catchPhrase();
-    },
-    compnayBS: function(options) {
-        return faker.Company.bs();
-    },
-    words: function(options) {
-        return faker.Lorem.words()
-    },
-    sentence: function(options) {
-        return faker.Lorem.sentence()
-    },
-    sentences: function(options) {
-        return faker.Lorem.sentences()
-    },
-    paragraph: function(options) {
-        return faker.Lorem.paragraph()
-    }
+
 };
 
 module.exports = {
     parse: function(string, options) {
         options = options || {};
 
-
         // Merge the built-in helpers with any that are passed in the options
         var combinedHelpers = {};
         Handlebars.Utils.extend(combinedHelpers, helpers);
+
+        Handlebars.Utils.extend(combinedHelpers, faker.Date);
+        Handlebars.Utils.extend(combinedHelpers, faker.Name);
+        Handlebars.Utils.extend(combinedHelpers, faker.Image);
+        Handlebars.Utils.extend(combinedHelpers, faker.Lorem);
+        Handlebars.Utils.extend(combinedHelpers, faker.Address);
+        Handlebars.Utils.extend(combinedHelpers, faker.Company);
+        Handlebars.Utils.extend(combinedHelpers, faker.Internet);
+        Handlebars.Utils.extend(combinedHelpers, faker.PhoneNumber);
+
         Handlebars.Utils.extend(combinedHelpers, options.helpers);
 
         // Reset indexes on each parse
