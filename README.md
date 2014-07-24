@@ -8,7 +8,7 @@
 - TODO Take in filename parameter!
 - DONE ~~Files: Format conversion library. Support CSV, JSON~~
 - TODO Error handling
-- TODO Uploader: provide html form
+- TODO Uploader: provide HTML form
 
 ## Template:
 Context, gathered from FileDB metadata and results.
@@ -20,7 +20,7 @@ Context, gathered from FileDB metadata and results.
 * success: boolean
 
 ## Restful:
-*NOTE* Right now we do not type check resource objects, so conversions to JSON are left to chance, ie a field containing a number might get parsed as a string. This is OK most of the time, but it could break your `where` queries on the `list` endpoint:
+*NOTE* Right now we do not type check resource objects, so conversions to JSON are left to chance, ie a field containing a number might get parsed as a string. This is OK most of the time, but it could break your `where` queries on the `list` endpoint. This two URLs are not equal:
 
 ```
 http://localhost:9000/api/athletes?where={"age":23}
