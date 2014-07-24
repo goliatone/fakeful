@@ -35,6 +35,7 @@ var zeroPad = function(num, len) {
 var uniqueIndex;
 
 var helpers = {
+    //TODO: Make available the index to the template!!!
     repeat: function(min, max, options) {
         // By default repeat will work with it's current context, unless it's
         // given an array in which case it'll work with that
