@@ -1,20 +1,29 @@
+'use strict';
+
 var express = require('express'),
     favicon = require('static-favicon'),
     logger = require('morgan'),
+    path = require('path'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
     errorHandler = require('../middleware/errorHandler'),
     routes = require('../routes'),
     debug = require('debug')('et'),
-    server = express();
+    multer = require('multer');
 
-console.log("***************************");
-console.log("time: ", new Date());
+console.log('***************************');
+console.log('time: ', new Date());
 console.log('dirname:', __dirname);
 
+var server = express();
+
 server.express = express;
-var multer = require('multer');
+
+
+server.set('views', path.join(__dirname, '../views'));
+server.set('view engine', 'ejs');
+
 
 server.use(favicon());
 server.use(logger('dev'));
@@ -50,13 +59,26 @@ server.run = function(config) {
     });
 };
 
+server.get('/', function(req, res) {
+    res.render('index', {
+        title: 'FAKEful'
+    });
+});
+
+/// catch 404 and forward to error handler
+server.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
 /*
  * development error handler
  * will print stacktrace
  */
 // if (server.get('env') === 'development') {
 require('express-debug')(server, { /* settings */ });
-server.use(require("express-chrome-logger"));
+server.use(require('express-chrome-logger'));
 
 server.use(function(err, req, res, next) {
     res.status(err.status || 500);
