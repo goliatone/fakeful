@@ -105,6 +105,11 @@ var helpers = {
         }
     },
 
+    uid: function(len) {
+        len = len || 32;
+        return Math.random().toString(35).substr(2, len);
+    },
+
     name: function(options) {
         return faker.Name.findName();
     },
