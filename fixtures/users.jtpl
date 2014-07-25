@@ -2,7 +2,7 @@
 {{#repeat 13}}
 {
   "_id":"{{uid 32}}",
-  "_index":"{{i}}",
+  "_index":"{{autoIncrement}}",
   "name": "{{findName}}",
   "handle":"{{userName}}",
   "address": "{{streetAddress}}",
