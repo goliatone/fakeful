@@ -32,7 +32,7 @@ var zeroPad = function(num, len) {
     return num;
 }
 
-var uniqueIndex;
+var indices = {};
 
 var helpers = {
     //TODO: Make available the index to the template!!!
@@ -109,6 +109,11 @@ var helpers = {
         len = len || 32;
         return Math.random().toString(35).substr(2, len);
     },
+    autoIncrement: function(id, count) {
+        count = isNaN(count) ? 0 : count;
+        if (!indices.hasOwnProperty(id)) indices[id] = count;
+        return ++indices[id];
+    }
     /************************************************
      * NAME
      ************************************************/
