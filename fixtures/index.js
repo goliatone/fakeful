@@ -1,7 +1,6 @@
 var Handlebars = require('handlebars'),
     faker = require('faker');
 
-// console.log(require('faker/lib/company'))
 
 // We try to keep names, emails and companies in sync, so that when using them
 // together in a loop they all relate to each other. To do this we link them all
@@ -113,9 +112,9 @@ var helpers = {
         count = isNaN(count) ? 0 : count;
         if (!indices.hasOwnProperty(id)) indices[id] = count;
         return ++indices[id];
-    }
+    },
     /************************************************
-     * NAME
+     * MOMENTjs
      ************************************************/
 
 
@@ -138,6 +137,7 @@ module.exports = {
         Handlebars.Utils.extend(combinedHelpers, faker.Internet);
         Handlebars.Utils.extend(combinedHelpers, faker.PhoneNumber);
 
+        Handlebars.Utils.extend(combinedHelpers, require('handlebars-helper-moment')());
         Handlebars.Utils.extend(combinedHelpers, options.helpers);
 
         // Reset indexes on each parse
