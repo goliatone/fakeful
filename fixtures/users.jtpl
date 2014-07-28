@@ -1,16 +1,16 @@
 [
 {{#repeat 13}}
 {
-  "_id":"{{uid 32}}",
-  "_index":"{{autoIncrement}}",
+  "_id": "{{uid 32}}",
+  "_index": "{{autoIncrement}}",
   "name": "{{findName}}",
-  "handle":"{{userName}}",
+  "handle": "{{userName}}",
   "address": "{{streetAddress}}",
-  "phone":"{{phoneNumber}}",
-  "company":"{{companyName}}",
-  "img":"{{avatar}}",
-  "bio":
-  "{{sentences 3}}"
+  "phone": "{{phoneNumber}}",
+  "company": "{{companyName}}",
+  "img": "{{avatar}}",
+  "bio": "{{sentences 3}}",
+  "created": "{{moment}}"
 }
 {{/repeat}}
 ]
