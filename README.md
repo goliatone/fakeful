@@ -12,7 +12,7 @@
 - TODO Implement fs ops with file streams
 - TODO UI for list/edit resources
 - TODO Refine data: Transform streams
-- TODO Integrate moment.js into faker module
+- TODO ~~Integrate moment.js into faker module~~
 
 ## Template:
 Context, gathered from FileDB metadata and results.
