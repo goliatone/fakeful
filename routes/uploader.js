@@ -53,6 +53,7 @@ uploader.get = function(req, res) {
     res.send(
         '<form action="/files/upload" method="post" enctype="multipart/form-data">' +
         '<input type="file" name="convertFile">' +
+        '<input type="text" name="filename" placeholder="Filename">' +
         '<input type="submit" value="Upload!">' +
         '</form>'
     );
