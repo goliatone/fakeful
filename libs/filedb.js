@@ -34,10 +34,20 @@ JsonDB.loadMetadata = function() {
     if (fs.existsSync(dirname)) return;
 
     this.load(dirname, function(err, data) {
+        if (err) {
+            if (err.code === 'ENOENT') {
+                console.log('Indexing DB for the first time')
+                return JsonDB.indexMetadata();
+            }
+            throw err;
+        }
         try {
             JsonDB.metadata = JSON.parse(data);
         } catch (err) {
+            console.log('======')
             console.log(err);
+            console.log(data);
+            console.log('======')
             throw new Error('Unable to load metadata');
             return;
         }
