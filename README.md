@@ -5,7 +5,7 @@
 - TODO ~~Routes: restful list, take in where/params~~
     -  TODO: Implement optional resource schema to handle type in queries
 - DONE ~~Sanitize output file name~~
-- TODO Take in filename parameter!
+- TODO ~~Take in filename parameter!~~
 - DONE ~~Files: Format conversion library. Support CSV, JSON~~
 - TODO Error handling
 - TODO Uploader: provide html form
