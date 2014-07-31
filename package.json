@@ -1,39 +1,41 @@
 {
-    "name": "xlsx2json",
-    "version": "0.0.0",
-    "description": "Test",
-    "main": "index.js",
-    "scripts": {
-        "test": "test"
-    },
-    "keywords": [
-        "secrets"
-    ],
-    "author": "goliatone",
-    "license": "ISC",
-    "dependencies": {
-        "xlsx": "0.7.6-g",
-        "csv": "~0.3.6",
-        "express": "^4.2.0",
-        "method-override": "~1.0.0",
-        "underscore": "~1.4.4",
-        "morgan": "~1.0.0",
-        "static-favicon": "~1.0.0",
-        "cookie-parser": "~1.0.1",
-        "body-parser": "~1.0.0",
-        "debug": "~0.7.4",
-        "multer": "^0.1.2",
-        "node-csv-json": "^0.2.1",
-        "faker": "^1.0.0",
-        "handlebars": "^2.0.0-alpha.4",
-        "cors": "^2.4.1",
-        "JSONStream": "^0.8.4",
-        "ejs": "^1.0.0",
-        "handlebars-helper-moment": "^0.2.0"
-    },
-    "devDependencies": {
-        "express-debug": "^1.1.0",
-        "express-chrome-logger": "^0.1.3",
-        "errorhandler": "^1.1.1"
-    }
+  "name": "xlsx2json",
+  "version": "0.0.0",
+  "description": "Test",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "secrets"
+  ],
+  "author": "goliatone",
+  "license": "ISC",
+  "dependencies": {
+    "xlsx": "0.7.6-g",
+    "csv": "~0.3.6",
+    "express": "^4.2.0",
+    "method-override": "~1.0.0",
+    "underscore": "~1.4.4",
+    "morgan": "~1.0.0",
+    "static-favicon": "~1.0.0",
+    "cookie-parser": "~1.0.1",
+    "body-parser": "~1.0.0",
+    "debug": "~0.7.4",
+    "multer": "^0.1.2",
+    "node-csv-json": "^0.2.1",
+    "faker": "^1.0.0",
+    "handlebars": "^2.0.0-alpha.4",
+    "cors": "^2.4.1",
+    "JSONStream": "^0.8.4",
+    "ejs": "^1.0.0",
+    "handlebars-helper-moment": "^0.2.0",
+    "grunt-cli": "^0.1.13",
+    "tuxedo": "0.0.0"
+  },
+  "devDependencies": {
+    "express-debug": "^1.1.0",
+    "express-chrome-logger": "^0.1.3",
+    "errorhandler": "^1.1.1"
+  }
 }
