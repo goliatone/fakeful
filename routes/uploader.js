@@ -59,18 +59,15 @@ uploader.get = function(req, res) {
     );
 };
 
-router.get('/upload', uploader.get)
-router.post('/upload', uploader.post);
-
-module.exports = function(server) {
-    //TODO: Here we should also take a config.
-    //config should have upload/output directories.
-    //we should mkdir if they do not exist.
-    _mkdirp('uploads', 'resources');
-
-    console.log(' - XLSX route handler');
-    server.use('/files', router);
+var Routes = {
+    using:'/files',
+    routes:{
+        'GET /upload': uploader.get,
+        'POST /upload': uploader.post
+    }
 };
+
+module.exports = Routes;
 
 var options = {
     filenameParam: 'filename',
