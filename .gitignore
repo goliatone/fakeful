@@ -66,3 +66,5 @@ node_modules
 
 # Project ignored files and dirs
 tmp
+uploads
+resources
