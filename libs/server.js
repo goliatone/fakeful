@@ -8,7 +8,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
     errorHandler = require('../middleware/errorHandler'),
-    routes = require('../routes'),
+    finder = require('trackfinder'),
     debug = require('debug')('et'),
     multer = require('multer');
 
@@ -36,6 +36,7 @@ server.use(multer({
         return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
     }
 }));
+
 server.use(cors());
 server.use(express.static(__dirname + '/../public'));
 
@@ -52,8 +53,13 @@ server.set('port', port);
 
 server.run = function(config) {
     var port = server.findPort();
-    routes(server);
+
+    finder.register(server, {
+        path: config.routesPath
+    });
+
     console.log('Server Run: listening in port', port);
+
     var app = server.listen(port, function() {
         debug('Express server listening on port' + app.address().port);
     });
