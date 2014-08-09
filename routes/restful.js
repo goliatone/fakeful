@@ -22,6 +22,7 @@ Template.precompileAction('result');
 
 db.idAttribute = '_index';
 db.resourcesPath = 'resources/';
+db.loadMetadata();
 
 var Routes = {
     messages: {
@@ -40,10 +41,10 @@ Routes.resultHandler = function(action, resource, res, err, result) {
         resource: resource,
         message: Routes.messages[action],
         count: result.length || 1,
-        total: 9999,
+        total: 00000,
         data: result
     });
-
+    console.log(db.metadata)
     res.set('Content-Type', 'application/json');
     res.send(200, out);
 };
@@ -126,7 +127,11 @@ Routes.listResources = function(req, res) {
         };
         files.filter(function(file) {
             return fs.statSync(path.join(_resources, file)).isFile();
-        }).forEach(function(file) {
+        })
+        .filter(function(file){
+            return file !== '.jsondb';
+        })
+        .forEach(function(file) {
             console.log("%s (%s)", file, path.extname(file));
             out.resources.push(file.replace(path.extname(file), ''));
         });
