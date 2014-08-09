@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs'),
     _ = require('underscore');
 
@@ -9,7 +11,7 @@ var JsonDB = function(resource, idAttribute) {
     var idAttr = idAttribute || JsonDB.idAttribute;
     var file = resource.indexOf('.json') === -1 ? resource + '.json' : resource;
     if (!file) {
-        throw new Error("DB: file name is required");
+        throw new Error('DB: file name is required');
     }
 
     var db = new FileDB(JsonDB.resourcesPath + file, {
@@ -36,22 +38,22 @@ JsonDB.loadMetadata = function() {
     this.load(dirname, function(err, data) {
         if (err) {
             if (err.code === 'ENOENT') {
-                console.log('Indexing DB for the first time')
+                console.log('Indexing DB for the first time');
                 return JsonDB.indexMetadata();
             }
             throw err;
         }
         try {
             JsonDB.metadata = JSON.parse(data);
+            this.loaded = true;
         } catch (err) {
-            console.log('======')
+            console.log('======');
             console.log(err);
             console.log(data);
-            console.log('======')
+            console.log('======');
             throw new Error('Unable to load metadata');
-            return;
         }
-    });
+    }.bind(this));
 };
 
 JsonDB.updateMetadata = function(resource, file, items) {
@@ -99,7 +101,7 @@ var _convertValueToFilter = function(attrs, idAttr) {
 };
 
 var _save = JsonDB.save = function(file, docs, resource) {
-    fs.writeFile(file, JSON.stringify(docs, null, " "), 'utf-8', function() {
+    fs.writeFile(file, JSON.stringify(docs, null, ' '), 'utf-8', function() {
         JsonDB.updateMetadata(resource, file, docs);
     });
 };
