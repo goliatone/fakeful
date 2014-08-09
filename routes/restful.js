@@ -135,27 +135,19 @@ Routes.listResources = function(req, res) {
     });
 };
 
-
-
-router.get('/resources', Routes.listResources);
-
-router.get('/:resource', Routes.list);
-router.get('/:resource/:id', Routes.read);
-router.get('/:parent/:parentId/:resource', Routes.list);
-
-
-router.post('/:resource', Routes.create);
-
-
-router.put('/:resource/:id', Routes.update);
-router.patch('/:resource/:id', Routes.update);
-
-router.delete('/:resource/:id', Routes.destroy);
+Routes.using = '/api';
+Routes.routes = {
+    'GET /resources': Routes.listResources,
+    'GET /:resource': Routes.list,
+    'GET /:resource/:id': Routes.read,
+    'GET /:parent/:parentId/:resource': Routes.list,
+    'POST /:resource': Routes.create,
+    'PUT /:resource/:id': Routes.update,
+    'PATCH /:resource/:id': Routes.update,
+    'DELETE /:resource/:id': Routes.destroy
+};
 
 //TODO: Make take config object to add a resource path
 //so that we can namespace resources and we can take in
 //routes from a configuration file.
-module.exports = function(server) {
-    console.log(' - API RESTful route handler');
-    server.use('/api', router);
-};
+module.exports =  Routes;
