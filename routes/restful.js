@@ -44,9 +44,9 @@ Routes.resultHandler = function(action, resource, res, err, result) {
         total: 00000,
         data: result
     });
-    console.log(db.metadata)
+    console.log('RESULT', resource, action);
     res.set('Content-Type', 'application/json');
-    res.send(200, out);
+    res.status(200).send(out);
 };
 
 // GET /:resource
@@ -92,7 +92,7 @@ Routes.create = function(req, res, next) {
 Routes.read = function(req, res, next) {
     // res.send('read=> resource:' + req.params.resource + ' id: ' + req.params.id);
     var resource = req.params.resource,
-        id = +req.params.id;
+        id = parseInt(req.params.id);
     db(resource).findOne(id, Routes.resultHandler.bind(null, 'read', resource, res));
 };
 
@@ -101,13 +101,17 @@ Routes.read = function(req, res, next) {
 Routes.update = function(req, res, next) {
     var resource = req.params.resource,
         attributes = req.body;
+
+        attributes[db.idAttribute] = parseInt(req.params.id);
+
+    // console.log('UPDATE', resource, attributes);
     db(resource).insert(attributes, Routes.resultHandler.bind(null, 'update', resource, res));
 };
 
 // DELETE /:resource/:id
 Routes.destroy = function(req, res, next) {
     var resource = req.params.resource,
-        id = +req.params.id;
+        id = parseInt(req.params.id);
     db(resource).remove(id, Routes.resultHandler.bind(null, 'delete', resource, res));
 };
 
