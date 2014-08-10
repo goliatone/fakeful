@@ -1,7 +1,7 @@
 ## TODO:
 - DONE ~~Output JSON templates~~
 - DONE ~~FileDB metadata: indexing, count~~
-- TODO Resources: list and details
+- DONE ~~Resources: list and details~~
 - TODO ~~Routes: restful list, take in where/params~~
     -  TODO: Implement optional resource schema to handle type in queries
 - DONE ~~Sanitize output file name~~
