@@ -134,7 +134,7 @@ var FileDB = function(file, config) {
 FileDB.prototype.find = function(options, cb) {
     //predicate is optional
     if (_.isFunction(options)) {
-        cb = attrs;
+        cb = options;
         options = undefined;
     }
 
@@ -172,6 +172,8 @@ FileDB.prototype.findOne = function(attrs, cb) {
 };
 
 FileDB.prototype.insert = function(newDoc, cb) {
+    // console.log('INSERT', newDoc);
+
     this.find((function(err, docs) {
 
         if (err) return cb(err);
@@ -181,12 +183,21 @@ FileDB.prototype.insert = function(newDoc, cb) {
             return doc[this.idAttr] === newDoc[this.idAttr];
         }).bind(this));
 
-        if (match.length >= 1) _.extend(match[0], newDoc);
-        else newDoc[this.idAttr] = docs.push(newDoc) - 1;
+        var out;
+
+        if (match.length >= 1){
+            out = match[0];
+            _.extend(out, newDoc);
+        } else {
+            newDoc[this.idAttr] = docs.push(newDoc) - 1;
+            out = newDoc;
+        }
+
+        // console.log('INSERT find cb', this.resource);
 
         _save(this.file, docs, this.resource);
 
-        cb(null, docs);
+        cb(null, out);
 
     }).bind(this));
 };
