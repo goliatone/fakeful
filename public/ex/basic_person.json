@@ -1,0 +1,45 @@
+{
+    "title": "Athlete",
+    "type": "object",
+    "id": "athlete",
+    "properties": {
+        "_id":{
+            "type":"string"
+        },
+        "_index":{
+            "type":"integer"
+        },
+        "athlete": {
+            "type": "string",
+            "description": "First and Last name",
+            "minLength": 4
+        },
+        "sport": {
+            "type": "string"
+        },
+        "closing_ceremony_date": {
+            "type": "string"
+        },
+        "age": {
+            "type": "integer"
+        },
+        "country": {
+            "type": "string"
+        },
+        "year": {
+            "type": "integer"
+        },
+        "total_medals": {
+            "type": "integer"
+        },
+        "gold_medals": {
+            "type": "integer"
+        },
+        "silver_medals": {
+            "type": "integer"
+        },
+        "bronze_medals": {
+            "type": "integer"
+        }
+    }
+}

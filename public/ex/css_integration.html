@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>CSS Integration JSON Editor Example</title>
+
+    <!-- Foundation CSS framework (Bootstrap and jQueryUI also supported) -->
+    <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+    <!-- Font Awesome icons (Bootstrap, Foundation, and jQueryUI also supported) -->
+    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'>
+
+    <script src="../javascripts/components/json-editor/dist/jsoneditor.js"></script>
+    <script src="../javascripts/components/jquery/jquery.js"></script>
+
+    <script>
+    // Set the default CSS theme and icon library globally
+    JSONEditor.defaults.theme = 'bootstrap3';
+    JSONEditor.defaults.iconlib = 'fontawesome4';
+    </script>
+  </head>
+  <body>
+  <div class='container'>
+    <div class='row'>
+      <div class='medium-12 columns'>
+        <h1>CSS Integration JSON Editor Example</h1>
+      </div>
+    </div>
+
+
+    <div class='row'>
+      <div class='medium-12-columns'>
+        <button id='submit' class='tiny'>Submit (console.log)</button>
+        <button id='restore' class='secondary tiny'>Restore to Default</button>
+        <span id='valid_indicator' class='label'></span>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button id='load' class="btn btn-default" type="button">Load</button>
+                    </span>
+                    <input id='loadId'  type="text" class="form-control">
+                </div><!-- /input-group -->
+            </div>
+        </div>
+    </div>
+
+
+
+    </div>
+    <div class='row'>
+      <div id='editor_holder' class='medium-12 columns'></div>
+    </div>
+</div>
+    <script>
+      // This is the starting value for the editor
+      // We will use this to seed the initial editor
+      // and to provide a "Restore to Default" button.
+      var starting_value = {
+      "_id": "m1e26gqek8echnfvew8xni6c",
+      "_index": 333,
+      "total_medals": 2,
+      "athlete": "Thomas Morgenstern",
+      "age": 19,
+      "country": "Austria",
+      "year": 2006,
+      "closing_ceremony_date": "2/26/06",
+      "sport": "Ski Jumping",
+      "gold_medals": 2,
+      "silver_medals": 0,
+      "bronze_medals": 0
+    };
+
+      // Initialize the editor
+      var editor = new JSONEditor(document.getElementById('editor_holder'),{
+        // Enable fetching schemas via ajax
+        ajax: true,
+
+        // The schema for the editor
+        schema: {
+          $ref: "person.json",
+          format: "grid"
+        },
+
+        // Seed the form with a starting value
+        startval: starting_value
+      });
+
+      // Hook up the submit button to log to the console
+      document.getElementById('submit').addEventListener('click',function() {
+        // Get the value from the editor
+        console.log(editor.getValue());
+        var url = 'http://localhost:9390/api/output/'+editor.getEditor('root._index').getValue()
+        $.ajax({
+            url:url,
+            type:'PUT',
+            dataType:'json',
+            data:editor.getValue()
+        }).fail(function(e){
+            console.error('what the fuck', e)
+        }).done(function(d){
+            console.info('done', d.data.output);
+        })
+      });
+
+      // Hook up the Restore to Default button
+      document.getElementById('restore').addEventListener('click',function() {
+        editor.setValue(starting_value);
+      });
+
+      document.getElementById('load').addEventListener('click',function(){
+            var url = 'http://localhost:9390/api/output/'+$('#loadId').val()
+            $.ajax({
+                url:url,
+                type:'GET'
+            }).fail(function(e){
+                console.error('what the fuck', e)
+            }).done(function(d){
+                console.info('done', d.data.output);
+                editor.setValue(d.data.output);
+            })
+
+      });
+
+      // Hook up the validation indicator to update its
+      // status whenever the editor changes
+      editor.on('change',function() {
+        // Get an array of errors from the validator
+        var errors = editor.validate();
+
+        var indicator = document.getElementById('valid_indicator');
+
+        // Not valid
+        if(errors.length) {
+          indicator.className = 'label alert';
+          indicator.textContent = 'not valid';
+        }
+        // Valid
+        else {
+          indicator.className = 'label success';
+          indicator.textContent = 'valid';
+        }
+      });
+    </script>
+  </body>
+</html>
