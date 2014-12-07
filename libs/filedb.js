@@ -1,6 +1,7 @@
 'use strict';
 
 var fs = require('fs'),
+    path = require('path'),
     _ = require('underscore');
 
 
@@ -14,7 +15,7 @@ var JsonDB = function(resource, idAttribute) {
         throw new Error('DB: file name is required');
     }
 
-    var db = new FileDB(JsonDB.resourcesPath + file, {
+    var db = new FileDB(path.join(JsonDB.resourcesPath, file), {
         idAttribute: idAttr,
         resource: resource
     });
@@ -23,7 +24,7 @@ var JsonDB = function(resource, idAttribute) {
 };
 
 var EXT = JsonDB.EXT = '.json';
-JsonDB.resourcesPath = '';
+JsonDB.resourcesPath = './resources';
 JsonDB.idAttribute = 'id';
 JsonDB.metadataFile = '.jsondb';
 JsonDB.metadata = {};
@@ -31,7 +32,9 @@ JsonDB.metadata = {};
 JsonDB.loadMetadata = function() {
     if (this.loaded) return;
 
-    var dirname = JsonDB.resourcesPath + JsonDB.metadataFile;
+    var dirname = path.join(JsonDB.resourcesPath,  JsonDB.metadataFile);
+
+    if(!fs.existsSync(JsonDB.resourcesPath)) fs.mkdirSync(JsonDB.resourcesPath);
 
     if (fs.existsSync(dirname)) return;
 
@@ -77,7 +80,8 @@ JsonDB.indexMetadata = function() {
     total = files.length;
     files.forEach(function(file) {
         try {
-            _load(dirname + file, function(err, data) {
+            console.log('LOAD PATH ',path.join(dirname, file))
+            _load(path.join(dirname, file), function(err, data) {
                 resource = file.replace(EXT, '');
                 items = JSON.parse(data);
                 JsonDB.updateMetadata(resource, file, items);
@@ -85,7 +89,7 @@ JsonDB.indexMetadata = function() {
                 if (total === count) callback(null, JsonDB.metadata);
             });
         } catch (e) {
-
+            console.log('ERROR', e)
         }
     });
 };
